@@ -1,0 +1,4 @@
+dev
+ifstat
+*.xml
+*.c.*

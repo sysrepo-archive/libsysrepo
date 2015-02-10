@@ -12,6 +12,7 @@
 *.su
 *~
 *.swp
+*.swo
 *.patch
 *.bin
 *.so
@@ -39,8 +40,12 @@ patches
 series
 
 # ctags
-tags
+TAGS
 
 # kdevelop
 .kdev4
 umaapi.kdev4
+
+# doxygen
+doxygen/
+Doxyfile
