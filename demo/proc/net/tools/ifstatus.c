@@ -58,7 +58,7 @@
 #ifdef __SYSREPO_PROC_NET_DEV_SIM__
 #define MAC16 (int)random()>>23
 /* N_DEVICES determines how many interfaces are to be simulated */
-const int IFSTATUS_N_DEVICES = 100;
+const int IFSTATUS_N_DEVICES = 10;
 #define FOPEN if_simulate_and_open 
 extern FILE* if_simulate_and_open(char* path, char* mode);
 extern int confd_errno;
@@ -95,7 +95,7 @@ char *IETF_INTERFACES_OPERATIONAL_SCHEMA =
 "  <interfaces-state xmlns=\"urn:ietf:params:xml:ns:yang:ietf-interfaces\">"
 "    <interface>"
 "      <name/>  "
-"      <type/>"
+"      <type>1000BASET</type>"
 "      <admin-status/>"
 "      <oper-status/> "
 "      <last-change/>"
@@ -354,7 +354,7 @@ char *update_status_and_generate_xml(node_t **root)
 	sprintf(macaddr,"%02X:%02X:%02X:%02X:%02X:%02X", MAC16, MAC16, MAC16, MAC16, MAC16, MAC16);
 
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "name", ifname);
-	roxml_add_node(child, 0, ROXML_ELM_NODE, "type", "1000BASET");
+	roxml_add_node(child, 0, ROXML_ELM_NODE, "type", "foo");
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "admin-status", NULL);
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "oper-status", NULL);
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "last-status", NULL);
@@ -365,17 +365,17 @@ char *update_status_and_generate_xml(node_t **root)
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "speed", NULL);
 	child = roxml_add_node(child, 0, ROXML_ELM_NODE, "statistics", NULL);
 
-	roxml_add_node(child, 0, ROXML_ELM_NODE, "discontinuity-time", NULL);
+	roxml_add_node(child, 0, ROXML_ELM_NODE, "discontinuity-time", "None");
         roxml_add_node(child, 0, ROXML_ELM_NODE, "in-octets", counterstr[RX_BYTES]);
         roxml_add_node(child, 0, ROXML_ELM_NODE, "in-unicast-pkts", counterstr[RX_PACKETS]);
-	roxml_add_node(child, 0, ROXML_ELM_NODE, "in-broadcast-pkts", NULL);
+	roxml_add_node(child, 0, ROXML_ELM_NODE, "in-broadcast-pkts", "None");
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "in-multicast-pkts", counterstr[MULTICAST]);
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "in-discards", counterstr[RX_DROPPED]);
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "in-errors", 	counterstr[RX_ERRS]);
-	roxml_add_node(child, 0, ROXML_ELM_NODE, "in-unknown-protos", NULL);
+	roxml_add_node(child, 0, ROXML_ELM_NODE, "in-unknown-protos", "None");
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "out-octets", counterstr[TX_BYTES]);
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "out-unicast-pkts", counterstr[TX_PACKETS]);
-	roxml_add_node(child, 0, ROXML_ELM_NODE, "out-broadcast-pkts", NULL);
+	roxml_add_node(child, 0, ROXML_ELM_NODE, "out-broadcast-pkts", "None");
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "out-multicast-pkts",counterstr[MULTICAST]);
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "out-discards", counterstr[TX_DROPPED]);
 	roxml_add_node(child, 0, ROXML_ELM_NODE, "out-errors", counterstr[TX_ERRS]);
