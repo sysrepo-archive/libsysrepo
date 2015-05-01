@@ -1,0 +1,735 @@
+module sshd_config {
+  namespace "urn:ietf:params:xml:ns:yang:ssh:sshd_config";
+  prefix ss;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+
+  organization 
+    "sysrepo.org";
+  description 
+    "Yang module for sshd configuration";
+  contact 
+    "nobody@sysrepo.org";
+
+  revision 2015-04-22 {
+    reference "https://github.com/sysrepo/yanger";
+  }
+
+  container sshd_config_options {
+    config true;
+    description 
+      "Keywords from sshd_config BSD man page and their value types.";
+    reference 
+      "BSD File Formats Manual, SSHD_CONFIG(5).";
+
+    leaf-list  AcceptEnv {
+        description   
+             "Specifies what environment variables sent by the client will be
+               copied into the session's environment.";
+        type string;
+	when "../Protocol = 2";
+    }
+    leaf AddressFamily {
+        description
+	  "Specifies which address family should be used by sshd.";
+	type enumeration {
+	  enum "ipv4";
+	  enum "ipv6";
+	  enum "any";
+	}
+        default "any";
+    }
+    leaf AllowAgentForwarding {
+        description
+           "Specifies whether ssh-agent forwarding is permitted.";
+        type enumeration {
+             enum "yes";
+	     enum "no";
+        }
+        default "yes";
+    }
+    leaf-list AllowGroups {
+         description
+             "This keyword can be followed by a list of group name patterns, 
+              separated by spaces.";
+         type string;
+    }
+    leaf AllowTcpForwarding {
+         description
+             "Specifies whether TCP forwarding is permitted.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+              enum "local";
+              enum "remote";
+         }
+         default "yes";
+    }
+    leaf AllowUsers {
+         description
+             "This keyword can be followed by a list of user name patterns, 
+              separated by spaces.";
+          type string;
+    }
+    leaf AuthenticationMethods {
+         description
+             "Specifies the authentication methods that must be successfully 
+              completed for a user to be granted access.  This option
+              must be followed by one or more comma-separated lists of authentication 
+              method names.";
+          type string;
+    }
+    leaf AuthorizedKeysCommand {
+         description 
+             "Specifies a program to be used to look up the user's public keys.";
+         type string;
+    }
+    leaf-list AuthorizedKeysCommandUser {
+         description
+             "Specifies the user under whose account the AuthorizedKeysCommand is run.";
+	 type string;
+    }
+    leaf AuthorizedKeysFile {
+         description
+             "Specifies the file that contains the public keys that can be used for user 
+              authentication.";
+         type string;
+    }
+    leaf AuthorizedPrincipalsFile {
+         description
+             "Specifies a file that lists principal names that are accepted for certificate 
+              authentication.";
+         type string;
+    }
+    leaf Banner {
+         description  
+             "The contents of the specified file are sent to the remote user before 
+              authentication is allowed.";
+         type string;
+	 when "../Protocol = 2";
+    }
+    leaf ChallengeResponseAuthentication {
+         description  
+             "Specifies whether challenge-response authentication is allowed (e.g. via PAM).";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "yes";
+    }
+    leaf ChrootDirectory {
+         description
+             "Specifies the pathname of a directory to chroot to after authentication.";
+        type string;
+    }
+    leaf Ciphers {
+         description
+             "Specifies the ciphers allowed for protocol version 2.";
+         type string;
+	 default "aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,\
+                  aes128-gcm@openssh.com,aes256-gcm@openssh.com, \
+                  chacha20-poly1305@openssh.com,\
+                  aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,\
+                  aes256-cbc,arcfour";
+    }
+    leaf  ClientAliveCountMax {
+         description
+             "Sets the number of client alive messages which may be sent without sshd 
+              receiving any messages back from the client.";
+         type uint16;
+         default 3;
+	 when "../Protocol = 2";
+    }
+    leaf ClientAliveInterval {
+         description
+             "Sets a timeout interval in seconds after which if no data has been received 
+              from the client, sshd will send a message through the encrypted channel 
+              to request a response from the client.";
+          type uint16;
+          default 0;
+	 when "../Protocol = 2";
+    }
+    leaf Compression {
+         description
+             "Specifies whether compression is allowed, or delayed until the user has  
+              authenticated successfully.";
+         type enumeration {
+              enum yes;
+              enum delayed;
+              enum no;
+         }
+         default delayed;
+    }
+    leaf DebianBanner {
+         description
+             "Specifies whether the distribution-specified extra version suffix is 
+              included during initial protocol handshake.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "yes";
+	 when "../OS = Debian";
+    }
+    leaf DenyGroups {
+         description
+             "This keyword can be followed by a list of group name patterns, separated by spaces.";
+          type string;
+    }
+    leaf DenyUsers {
+         description
+             "This keyword can be followed by a list of user name patterns, separated by spaces.";
+         type string;
+    }
+    leaf ForceCommand {
+         description
+             "Forces the execution of the command specified by ForceCommand, 
+              ignoring any command supplied by the client and  ~/.ssh/rc if present.";
+         type string;
+    }
+    leaf GatewayPorts {
+         description
+             "Specifies whether remote hosts are allowed to connect to ports forwarded for the client.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "no";
+    }
+    leaf GSSAPIAuthentication {
+         description
+             "Specifies whether user authentication based on GSSAPI is allowed.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "no";
+	 when "../Protocol = 2";
+    }
+    leaf GSSAPIKeyExchange {
+         description
+             "Specifies whether key exchange based on GSSAPI is allowed.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "no";
+	 when "../Protocol = 2";
+     }
+    leaf GSSAPICleanupCredentials {
+         description
+             "Specifies whether to automatically destroy the user's credentials cache on logout.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "yes";
+	 when "../Protocol = 2";
+    }
+    leaf GSSAPIStrictAcceptorCheck {
+         description
+             "Determines whether to be strict about the identity of the GSSAPI acceptor a client authenticates against.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "yes";
+	 when "../Protocol = 2";
+    }
+    leaf GSSAPIStoreCredentialsOnRekey {
+         description
+             "Controls whether the user's GSSAPI credentials should be updated following 
+             a successful connection rekeying.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "no";
+	 when "../Protocol = 2";
+    }
+    leaf HostbasedAuthentication {
+         description
+             "Specifies whether rhosts or /etc/hosts.equiv authentication together with 
+             successful public key client host authentication is allowed (host-based authentication).";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "no";
+	 when "../Protocol = 2";
+    }
+    leaf HostbasedUsesNameFromPacketOnly {
+         description
+             "Specifies whether or not the server will attempt to perform a reverse name 
+             lookup when matching the name in the ~/.shosts, ~/.rhosts, and /etc/hosts.equiv 
+             files during HostbasedAuthentication.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "no";
+    }
+    leaf HostCertificate {
+         description
+             "Specifies a file containing a public host certificate.";
+         type string;
+    }
+    leaf HostKey {
+         description
+             "Specifies a file containing a private host key used by SSH.";
+         type string;
+    }
+    leaf HostKeyAgent {
+         description
+             "Identifies the UNIX-domain socket used to communicate with an agent that has access to the private host keys."; 
+         type uint16;
+    }
+    leaf IgnoreRhosts {
+         description
+             "Specifies that .rhosts and .shosts files will not be used in RhostsRSAAuthentication or HostbasedAuthentication.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "yes";
+     }
+     leaf IgnoreUserKnownHosts {
+          description
+             "Specifies whether sshd should ignore the user's ~/.ssh/known_hosts during RhostsRSAAuthentication or
+             HostbasedAuthentication.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "no";
+     }
+     leaf IPQoS {
+          description  
+             "Specifies the IPv4 type-of-service or DSCP class for the connection.";
+          type string;
+          default "lowdelay";
+     }
+     leaf KbdInteractiveAuthentication {
+          description
+             "Specifies whether to allow keyboard-interactive authentication.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "yes";
+     }
+     leaf KerberosAuthentication {
+          description
+             "Specifies whether the password provided by the user for PasswordAuthentication
+              will be validated through the Kerberos KDC.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "no";
+     }
+     leaf KerberosGetAFSToken {
+          description
+             "If AFS is active and the user has a Kerberos 5 TGT, attempt to acquire an AFS 
+             token before accessing the user's home directory.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "no";
+     }
+     leaf KerberosOrLocalPasswd {
+          description
+             "If password authentication through Kerberos fails then the password will be 
+             validated via any additional local mechanism such as /etc/passwd.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+         default "yes";
+     }
+     leaf KerberosTicketCleanup {
+          description
+             "Specifies whether to automatically destroy the user's ticket cache file on logout.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+          default "yes";
+     }
+     leaf KexAlgorithms {
+          description
+             "Specifies the available KEX (Key Exchange) algorithms.";
+          type string;
+          default "curve25519-sha256@libssh.org,\
+                   ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,\
+                   diffie-hellman-group-exchange-sha256,\
+                   diffie-hellman-group-exchange-sha1,\
+                   diffie-hellman-group14-sha1,\
+                   diffie-hellman-group1-sha1";
+     }
+     leaf KeyRegenerationInterval {
+          description
+             "In protocol version 1, the ephemeral server key is automatically regenerated after 
+             this many seconds (if it has been used).  The purpose of regeneration is to prevent 
+             decrypting captured sessions by later breaking into the machine and stealing the keys.  
+             The key is never stored anywhere.  If the value is 0, the key is never regenerated.";
+          type uint16;
+          default 3600;
+     }
+     leaf ListenAddress {
+          description
+             "Specifies the local addresses sshd should listen on.  The following forms may be used:
+
+                   ListenAddress host|IPv4_addr|IPv6_addr
+                   ListenAddress host|IPv4_addr:port
+                   ListenAddress [host|IPv6_addr]:port
+
+             If port is not specified, sshd will listen on the address and all prior Port options 
+             specified.  The default is to listen on all local addresses.  Multiple ListenAddress 
+             options are permitted.  Additionally, any Port options must
+             precede this option for non-port qualified addresses.";
+          type string;
+	  default "host|IPv4_addr|IPv6_addr";
+     }
+     leaf LoginGraceTime {
+          description
+             "The server disconnects after this time if the user has not successfully 
+              logged in.  If the value is 0, there is no time limit.";
+          type uint16;
+          default 120;
+     }
+     leaf LogLevel {
+          description
+             "Gives the verbosity level that is used when logging messages from sshd.";
+          type string;
+          default "QUIET";
+     }
+     leaf MACs     {
+          description
+             "Specifies the available MAC (message authentication code) algorithms.";
+          type string;
+          default "hmac-md5-etm@openssh.com,hmac-sha1-etm@openssh.com,\
+                   umac-64-etm@openssh.com,umac-128-etm@openssh.com,\
+                   hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,\
+                   hmac-ripemd160-etm@openssh.com,hmac-sha1-96-etm@openssh.com,\
+                   hmac-md5-96-etm@openssh.com,\
+                   hmac-md5,hmac-sha1,umac-64@openssh.com,umac-128@openssh.com,\
+                   hmac-sha2-256,hmac-sha2-512,hmac-ripemd160,\
+                   hmac-sha1-96,hmac-md5-96";
+     }
+     leaf-list Match    {
+          description
+             "Introduces a conditional block.";
+          type string;
+     }
+     leaf MaxAuthTries {
+          description
+             "Specifies the maximum number of authentication attempts permitted per connection.";
+          type uint16;
+          default 6;
+     }
+     leaf MaxSessions {
+          description
+             "Specifies the maximum number of open sessions permitted per network connection. ";
+          type uint16;
+          default 10;
+     }
+     leaf MaxStartups {
+          description
+             "Specifies the maximum number of concurrent unauthenticated connections to the SSH daemon.  Additional connections will
+             be dropped until authentication succeeds or the LoginGraceTime expires for a connection.  The default is 10:30:100.";
+          type uint16;
+	  default 10;
+     }
+     leaf OS {
+       description "sshd_config files differ among operating systems";
+       type enumeration {
+	 enum Debian;
+	 enum Fedora;
+	 enum Windows;
+	 enum OSX;
+	 enum OpenWrt;
+	 enum Unknown;
+       }
+       default Unknown;
+     }
+     leaf PasswordAuthentication {
+          description
+             "Specifies whether password authentication is allowed.  The default is “yes”.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+          default "yes";
+     }
+     leaf PermitEmptyPasswords {
+          description
+             "When password authentication is allowed, it specifies whether the server allows login to accounts with empty password
+             strings.";
+         type enumeration {
+              enum "yes";
+              enum "no";
+         }
+          default "no";
+     }
+     leaf PermitOpen {
+          description
+             "Specifies the destinations to which TCP port forwarding is permitted.  The forwarding specification must be one of the
+             following forms:
+
+                   PermitOpen host:port
+                   PermitOpen IPv4_addr:port
+                   PermitOpen [IPv6_addr]:port
+
+             Multiple forwards may be specified by separating them with whitespace.  An argument of “any” can be used to remove all
+             restrictions and permit any forwarding requests.  An argument of “none” can be used to prohibit all forwarding
+             requests.  By default all port forwarding requests are permitted.";
+          type string;
+     }
+     leaf PermitRootLogin {
+          description
+             "Specifies whether root can log in using ssh.";
+	  type enumeration {
+               enum yes;
+               enum without_password;
+               enum forced_commands_only;
+               enum no;
+          }
+	  default "yes";
+     }
+     leaf PermitTunnel {
+          description
+             "Specifies whether tun device forwarding is allowed.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "no";
+     }
+     leaf PermitTTY {
+          description
+             "Specifies whether pty allocation is permitted.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+     }
+     leaf PermitUserEnvironment {
+          description
+             "Specifies whether ~/.ssh/environment and environment= options in ~/.ssh/authorized_keys are processed by sshd.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "no";
+     }
+     leaf PidFile {
+          description
+             "Specifies the file that contains the process ID of the SSH daemon.";
+	  type string;
+	  // On Debian: default "/var/run/sshd.pid";
+     }
+     leaf Port {
+          description
+             "Specifies the port number that sshd listens on.  ";
+	  type inet:port-number;
+          default 22;
+     }
+     leaf PrintLastLog {
+          description
+             "Specifies whether sshd should print the date and time of the last user login when a user logs in interactively.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+     }
+     leaf PrintMotd {
+          description
+             "Specifies whether sshd should print /etc/motd when a user logs in interactively.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+     }
+     leaf Protocol {
+          description
+             "Specifies the protocol versions sshd supports.";
+          type string;
+          default "2";
+     }
+     leaf PubkeyAuthentication {
+          description
+             "Specifies whether public key authentication is allowed.  The default is “yes”.  Note that this option applies to pro‐
+             tocol version 2 only.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+	  when "../Protocol = 2";
+     }
+     leaf RekeyLimit {
+          description
+             "Specifies the maximum amount of data that may be transmitted before the session key is renegotiated, optionally fol‐
+             lowed a maximum amount of time that may pass before the session key is renegotiated.  The first argument is specified
+             in bytes and may have a suffix of ‘K’, ‘M’, or ‘G’ to indicate Kilobytes, Megabytes, or Gigabytes, respectively.  The
+             default is between ‘1G’ and ‘4G’, depending on the cipher.  The optional second value is specified in seconds and may
+             use any of the units documented in the TIME FORMATS section.  The default value for RekeyLimit is “default none”,
+             which means that rekeying is performed after the cipher's default amount of data has been sent or received and no time
+             based rekeying is done.  This option applies to protocol version 2 only.";
+          type string;
+          default "default none";
+     }
+     leaf RevokedKeys {
+          description
+             "Specifies revoked public keys.";
+          type string;
+     }
+     leaf RhostsRSAAuthentication {
+          description
+             "Specifies whether rhosts or /etc/hosts.equiv authentication together with successful RSA host authentication is
+             allowed.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "no";
+	  when "../Protocol = 1";
+     }
+     leaf RSAAuthentication {
+          description
+             "Specifies whether pure RSA authentication is allowed.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+	  when "../Protocol = 1";
+     }
+     leaf ServerKeyBits {
+          description
+             "Defines the number of bits in the ephemeral protocol version 1 server key.";
+	  type uint16;
+          default 1024;
+     }
+     leaf StrictModes {
+          description
+             "Specifies whether sshd should check file modes and ownership of the user's files and home directory before accept‐
+             ing login.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+     }
+     leaf Subsystem {
+          description
+             "Configures an external subsystem (e.g. file transfer daemon).  Arguments should be a subsystem name and a command
+             (with optional arguments) to execute upon subsystem request.";
+          type string;
+	  when "../Protocol = 2";
+     }
+     leaf SyslogFacility {
+          description
+             "Gives the facility code that is used when logging messages from sshd.  The possible values are: DAEMON, USER, AUTH,
+             LOCAL0, LOCAL1, LOCAL2, LOCAL3, LOCAL4, LOCAL5, LOCAL6, LOCAL7.";
+          type string;
+          default "AUTH";
+     }
+     leaf TCPKeepAlive {
+          description
+             "Specifies whether the system should send TCP keepalive messages to the other side.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+     }
+     leaf TrustedUserCAKeys {
+          description
+             "Specifies a file containing public keys of certificate authorities that are trusted to sign user certificates for
+             authentication.";
+          type string;
+     }
+     leaf UseDNS {
+          description
+             "Specifies whether sshd should look up the remote host name and check that the resolved host name for the remote IP
+             address maps back to the very same IP address.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+     }
+     leaf UseLogin {
+          description
+             "Specifies whether login is used for interactive login sessions.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "no";
+     }
+     leaf UsePAM {
+          description  
+             "Enables the Pluggable Authentication Module interface.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "no";
+     }
+     leaf UsePrivilegeSeparation {
+          description
+             "Specifies whether sshd separates privileges by creating an unprivileged child process to deal with incoming network
+             traffic.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+     }
+     leaf VersionAddendum {
+          description
+             "Optionally specifies additional text to append to the SSH protocol banner sent by the server upon connection.";
+          type string;
+          default "";
+     }
+     leaf X11DisplayOffset {
+          description
+             "Specifies the first display number available for sshd's X11 forwarding.";
+          type uint16;
+          default 10;
+     }
+     leaf X11Forwarding {
+          description
+             "Specifies whether X11 forwarding is permitted. ";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "no";
+     }
+     leaf X11UseLocalhost {
+          description
+             "Specifies whether sshd should bind the X11 forwarding server to the loopback or wildcard address.";
+	  type enumeration {
+               enum "yes";
+               enum "no";
+          }
+          default "yes";
+     }
+     leaf XAuthLocation {
+          description
+             "Specifies the full pathname of the xauth program.  The default is /usr/bin/xauth.";
+          type string;
+          //On Debian default "/usr/bin/xauth";
+     }
+   }
+}
