@@ -171,7 +171,7 @@ module sshd_config {
               enum "no";
          }
          default "yes";
-	 when "../OS = Debian";
+	 when "../OS = 'Debian'";
     }
     leaf DenyGroups {
          description
