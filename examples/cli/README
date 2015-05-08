@@ -1,0 +1,42 @@
+The cli program is a command line interface to a sysrepo daemon.  The 
+May 2015 version of cli uses sysrepod srd protocol and the sysrepod
+sockets API.  The cli program uses GNU readline and has been derived
+from the fileman.c program for using readline for file operations.
+The cli program instead has sysrepod RPC operations.
+
+INSTALLATION
+
+The Makefile shows the several dependencies:
+
+1) https://github.com/sysrepo/sysrepod
+2) The GNU readline package
+3) The libxml2 package
+
+BUILD
+
+Type "make" to produce a sysrepod executable.
+
+RUN
+
+Type "./sysrepo" to start sysrepo.  The commands are described by typing
+"help" or "?" on the command line.  The typical sequence of operations
+would be as follows:
+sysrepo> connect
+sysrepo> open sshd_config
+sysrepo> ...
+
+Once a connection is made to a sysrepo server and a repository has been
+opened, operations against the server and the datastore can proceed.
+An example would be:
+sysrepo>xslt sshd_config.xsl
+
+Or:
+sysrepo> send <xml><command>disconnect</command></etc>
+
+The last "send" command example exposes a bug in the current software:
+Since the send string is opaque to cli, the cil send routine does not
+properly update the connection state machine to disconnected.
+
+
+
+
