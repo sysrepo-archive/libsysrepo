@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/file.h>
 #include <sys/stat.h>
@@ -74,6 +75,7 @@ char *stripwhite ();
 COMMAND *find_command ();
 void initialize_readline ();
 int execute_line (char *);
+static void handle_signal(int sigid, siginfo_t *siginfo, void *context);
 
 /* The name of this program, as taken from argv[0]. */
 char *progname;
@@ -83,7 +85,23 @@ int done;
 
 int main (int argc, char **argv)
 {
+  extern int sockfd;
   char *line, *s;
+  struct sigaction sig;
+  memset(&sig,'\0',sizeof(sig));
+ 
+  /* Use the sa_sigaction field because the handles has two additional parameters */
+  sig.sa_sigaction = &handle_signal; 
+  /* The SA_SIGINFO flag tells sigaction() to use the sa_sigaction field, not sa_handler. */
+  sig.sa_flags = SA_SIGINFO; 
+  if (sigaction(SIGPIPE, &sig, NULL) < 0) {
+    fprintf (stderr,"SIGPIPE sigaction failure");
+    return 1;
+  }
+  if (sigaction(SIGINT, &sig, NULL) < 0) {
+    fprintf (stderr,"SIGINT sigaction failure");
+    return 1;
+  }
 
   progname = argv[0];
 
@@ -110,6 +128,7 @@ int main (int argc, char **argv)
 
       free (line);
     }
+  close(sockfd);
   exit (0);
 }
 
@@ -283,6 +302,23 @@ int  serverPort = SRD_DEFAULTSERVERPORT;
 char dataStoreName[SRD_DEFAULT_NAMESIZE] = "running";
 int sockfd;
 enum cstate state = disconnected;
+
+/* Handle Signals */
+static void handle_signal(int sigid, siginfo_t *siginfo, void *context)
+{
+  fprintf (stderr, "Caught SIGNAL: %d PID: %ld, UID: %ld\n",sigid,
+	    (long)siginfo->si_pid, (long)siginfo->si_uid);
+  switch (sigid) {
+  case SIGPIPE :
+    state = disconnected;
+    break;
+  case SIGINT :
+    done = 1;
+    break;
+  default :
+    break;
+  }
+}
 
 /* Connect to server */
 int com_connect (char *arg)
