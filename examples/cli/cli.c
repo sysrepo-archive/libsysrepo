@@ -46,14 +46,14 @@ int com_help(), com_quit();
 
 /* A structure which contains information on the commands this program
    can understand. */
-typedef int Function ();
+typedef int Function2 ();
 typedef void VFunction ();
 typedef char *CPFunction (); 
-typedef char **CPPFunction ();
+typedef char **CPPFunction2 ();
 
 typedef struct {
   char *name;    /* User printable name of the function. */
-  Function *func;/* Function to call to do the job. */
+  Function2 *func;/* Function to call to do the job. */
   char *doc;     /* Documentation for this function.  */
 } COMMAND;
 
@@ -67,7 +67,7 @@ COMMAND commands[] = {
   { "xpath", com_xpath, "Apply string XPATH to the the open datastore" },
   { "?", com_help, "Synonym for `help'" },
   { "quit",com_quit,"Quit the sysrepo CLI" },
-  { (char *)NULL, (Function *)NULL, (char *)NULL }
+  { (char *)NULL, (Function2 *)NULL, (char *)NULL }
 };
 
 /* Forward declarations. */
@@ -225,7 +225,7 @@ void initialize_readline ()
   rl_readline_name = "FileMan";
 
   /* Tell the completer that we want a crack first. */
-  rl_attempted_completion_function = (CPPFunction *)fileman_completion;
+  rl_attempted_completion_function = (CPPFunction2 *)fileman_completion;
 }
 
 /* Attempt to complete on the contents of TEXT.  START and END show the
