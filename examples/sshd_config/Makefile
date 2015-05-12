@@ -1,6 +1,6 @@
 MODULES = sshd_config.yang
 TARGET ?= config
-BASE ?= sample
+BASE ?= sshd
 bn = $(BASE)-$(TARGET)
 schemas = $(bn).rng $(BASE)-gdefs-config.rng $(bn)-dsrl.xsl $(bn)-sch.xsl
 tgt = --stringparam target $(TARGET)
@@ -17,11 +17,12 @@ rnc: $(bn).rnc
 
 skel: $(bn)-skel.xml
 
-tree: model.tree
+xml: $(bn)-skel.xml
 
 $(bn)-skel.xml: $(MODULES)
 	@pyang -f sample-xml-skeleton $(SKELOPTS) $^ | \
 	    xmllint --output $@ --format -
+	@cp $(bn)-skel.xml $(bn).xml
 
 model.tree: $(MODULES)
 	@pyang -o $@ -f tree $^
@@ -47,14 +48,14 @@ $(bn)-sch.xsl: $(bn).dsdl
 	    xsltproc $(PYANG_XSLT_DIR)/iso_abstract_expand.xsl - | \
             xsltproc -o $@ $(PYANG_XSLT_DIR)/iso_svrl_for_xslt1.xsl -
 
-validate: $(bn).xml $(schemas)
-	@jing $(bn).rng $<
-	@xsltproc $(bn)-dsrl.xsl $< | xsltproc $(bn)-sch.xsl - | \
+validate: $(bn)-skel.xml $(schemas)
+	jing $(bn).rng $<
+	xsltproc $(bn)-dsrl.xsl $< | xsltproc $(bn)-sch.xsl - | \
 	    xsltproc $(PYANG_XSLT_DIR)/svrl2text.xsl -
 
 sshd_config: $(bn).xml
 	@xsltproc -o $@ $(SSHSS) $<
 
 clean:
-	@rm -f $(schemas) $(bn)-skel.xml sshd_config $(bn).dsdl \
+	@rm -f $(schemas) $(bn)-skel.xml $(bn).xml sshd_config $(bn).dsdl \
 	    model.tree *.rnc

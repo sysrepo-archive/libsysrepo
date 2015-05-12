@@ -1,0 +1,91 @@
+SSHD_CONFIG is the configuration file used by the SSH daemon.
+This directory contains the following files.
+
+1. sshd_config.yang is the YANG data model for an sshd_config
+   file.
+2. sshd_config.xsl is the XSLT stylesheet for extracting an
+   sshd_config file from an XML document or a sysrepo repository.
+3. The Makefile makes .xml, .dsdl, .rng, .xsl files from 
+   sshd_config.yang.
+
+The tools used in this directory can make an XML document file
+from sshd-config.yang and derived files.  sshd-config.xml is
+an XML instantiation of sshd_config.yang containing the default
+values from the yang file.  Other intermediate relaxng schema
+files and stylesheets are also created by the make process.
+These are described below.
+
+INSTALLATION
+~~~~~~~~~~~~
+
+The Makefile shows the dependencies:
+
+1) https://github.com/mbj4668/pyang.git
+2) The xstlproc package
+3) The jing package and Java runtime
+
+Note that #3, jing, can be replaced by xmllint, which has equivalent
+functionality but inferior error reporting.
+
+BUILD
+~~~~~
+
+It is necessary to set two environment variables.
+
+export PYANG_XSLT_DIR='/usr/local/share/yang/xslt/'
+export PYANG_RNG_LIBDIR='/usr/local/share/yang/schema/'
+
+The path to the XSLT_DIR and PYANG_RNG_LIBDIR may vary depending on your
+pyang installation.
+
+Type "make" to produce the dsdl and xsl files.
+
+Type "make xml" to produce the XML instance document sshd-config.xml.  
+
+"make sshd_config" produces an sshd configuration file.
+
+USE
+~~~
+
+The "make sshd_config" rule can be run from the command
+line as:
+
+xsltproc sshd-config.xsl sshd-config.xml
+
+This operation can similarly be performed through sysrepod, which is the
+object of sshd_config tools and files.  But to run this to sysrepod, the
+cli tools can be used from libsysrepo/examples/cli - provided of course
+that sysrepod is installed and running.  And provided that sysrepod has
+the sshd_config schema information that it needs to answer queries such
+as from the cli tool.
+
+Thus, the main use of sshd_config is to produce the files needed to
+derive a sysrepod schema from a YANG file and to apply sshd-config.xsl
+to a sysrepod repository that has sshd_config schema.  These schema
+can be validated.
+
+"make validate" will validate the schema produced by "make" against the
+sshd-config.xml file, which is a by-product of the make process but
+that can be explicitly created by "make xml."
+
+The schema-related files produced by the Makefile are the following.
+
+1. sshd-config.dsdl
+   This is the RFC 6110 hybrid schema file.
+
+2. sshd-config.rng
+   This is the RelaxNG schema file.
+
+3. sshd-gdefs-config.rng
+   This file contains global definitions that are part of the RELAX NG 
+   schema. For certain technical reasons they have to be in a separate 
+   file.
+
+4. sshd-config-dsrl.xsl
+   XSLT stylesheet that add default values of leafs where 
+   sshd-config.xml doesn’t provide an explicit value.
+
+5. sshd-config-sch.xsl
+   This XSLT stylesheet checks all semantic rules as defined in the 
+   YANG model.
+

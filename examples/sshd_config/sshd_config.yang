@@ -26,8 +26,8 @@ module sshd_config {
 
     leaf-list  AcceptEnv {
         description   
-             "Specifies what environment variables sent by the client will be
-               copied into the session's environment.";
+             "Specifies what environment variables sent by the client 
+	     will be copied into the session's environment.";
         type string;
 	when "../Protocol = 2";
     }
@@ -75,44 +75,47 @@ module sshd_config {
     }
     leaf AuthenticationMethods {
          description
-             "Specifies the authentication methods that must be successfully 
-              completed for a user to be granted access.  This option
-              must be followed by one or more comma-separated lists of authentication 
-              method names.";
+             "Specifies the authentication methods that must be 
+	     successfully completed for a user to be granted access.  
+	     This option must be followed by one or more comma-separated 
+	     lists of authentication method names.";
           type string;
     }
     leaf AuthorizedKeysCommand {
          description 
-             "Specifies a program to be used to look up the user's public keys.";
+             "Specifies a program to be used to look up the user's public 
+	     keys.";
          type string;
     }
     leaf-list AuthorizedKeysCommandUser {
          description
-             "Specifies the user under whose account the AuthorizedKeysCommand is run.";
+             "Specifies the user under whose account the AuthorizedKeysCommand 
+	     is run.";
 	 type string;
     }
     leaf AuthorizedKeysFile {
          description
-             "Specifies the file that contains the public keys that can be used for user 
-              authentication.";
+             "Specifies the file that contains the public keys that can be 
+	     used for user authentication.";
          type string;
     }
     leaf AuthorizedPrincipalsFile {
          description
-             "Specifies a file that lists principal names that are accepted for certificate 
-              authentication.";
+             "Specifies a file that lists principal names that are accepted 
+	     for certificate authentication.";
          type string;
     }
     leaf Banner {
          description  
-             "The contents of the specified file are sent to the remote user before 
-              authentication is allowed.";
+             "The contents of the specified file are sent to the remote user 
+	     before authentication is allowed.";
          type string;
 	 when "../Protocol = 2";
     }
     leaf ChallengeResponseAuthentication {
          description  
-             "Specifies whether challenge-response authentication is allowed (e.g. via PAM).";
+             "Specifies whether challenge-response authentication is 
+	     allowed (e.g. via PAM).";
          type enumeration {
               enum "yes";
               enum "no";
@@ -121,7 +124,8 @@ module sshd_config {
     }
     leaf ChrootDirectory {
          description
-             "Specifies the pathname of a directory to chroot to after authentication.";
+             "Specifies the pathname of a directory to chroot to after 
+	     authentication.";
         type string;
     }
     leaf Ciphers {
@@ -136,25 +140,26 @@ module sshd_config {
     }
     leaf  ClientAliveCountMax {
          description
-             "Sets the number of client alive messages which may be sent without sshd 
-              receiving any messages back from the client.";
+             "Sets the number of client alive messages which may be sent 
+	     without sshd receiving any messages back from the client.";
          type uint16;
          default 3;
 	 when "../Protocol = 2";
     }
     leaf ClientAliveInterval {
          description
-             "Sets a timeout interval in seconds after which if no data has been received 
-              from the client, sshd will send a message through the encrypted channel 
-              to request a response from the client.";
+             "Sets a timeout interval in seconds after which if no data 
+	     has been received from the client, sshd will send a message 
+	     through the encrypted channel to request a response from the 
+	     client.";
           type uint16;
           default 0;
 	 when "../Protocol = 2";
     }
     leaf Compression {
          description
-             "Specifies whether compression is allowed, or delayed until the user has  
-              authenticated successfully.";
+             "Specifies whether compression is allowed, or delayed until 
+	     the user has authenticated successfully.";
          type enumeration {
               enum yes;
               enum delayed;
@@ -164,8 +169,8 @@ module sshd_config {
     }
     leaf DebianBanner {
          description
-             "Specifies whether the distribution-specified extra version suffix is 
-              included during initial protocol handshake.";
+             "Specifies whether the distribution-specified extra version 
+	     suffix is included during initial protocol handshake.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -175,23 +180,27 @@ module sshd_config {
     }
     leaf DenyGroups {
          description
-             "This keyword can be followed by a list of group name patterns, separated by spaces.";
+             "This keyword can be followed by a list of group name 
+	     patterns, separated by spaces.";
           type string;
     }
     leaf DenyUsers {
          description
-             "This keyword can be followed by a list of user name patterns, separated by spaces.";
+             "This keyword can be followed by a list of user name 
+	     patterns, separated by spaces.";
          type string;
     }
     leaf ForceCommand {
          description
-             "Forces the execution of the command specified by ForceCommand, 
-              ignoring any command supplied by the client and  ~/.ssh/rc if present.";
+             "Forces the execution of the command specified by 
+	     ForceCommand, ignoring any command supplied by the 
+	     client and  ~/.ssh/rc if present.";
          type string;
     }
     leaf GatewayPorts {
          description
-             "Specifies whether remote hosts are allowed to connect to ports forwarded for the client.";
+             "Specifies whether remote hosts are allowed to connect to 
+	     ports forwarded for the client.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -200,7 +209,8 @@ module sshd_config {
     }
     leaf GSSAPIAuthentication {
          description
-             "Specifies whether user authentication based on GSSAPI is allowed.";
+             "Specifies whether user authentication based on GSSAPI is 
+	     allowed.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -220,7 +230,8 @@ module sshd_config {
      }
     leaf GSSAPICleanupCredentials {
          description
-             "Specifies whether to automatically destroy the user's credentials cache on logout.";
+             "Specifies whether to automatically destroy the user's 
+	     credentials cache on logout.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -230,7 +241,8 @@ module sshd_config {
     }
     leaf GSSAPIStrictAcceptorCheck {
          description
-             "Determines whether to be strict about the identity of the GSSAPI acceptor a client authenticates against.";
+             "Determines whether to be strict about the identity of the 
+	     GSSAPI acceptor a client authenticates against.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -240,8 +252,8 @@ module sshd_config {
     }
     leaf GSSAPIStoreCredentialsOnRekey {
          description
-             "Controls whether the user's GSSAPI credentials should be updated following 
-             a successful connection rekeying.";
+             "Controls whether the user's GSSAPI credentials should be 
+	     updated following a successful connection rekeying.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -251,8 +263,9 @@ module sshd_config {
     }
     leaf HostbasedAuthentication {
          description
-             "Specifies whether rhosts or /etc/hosts.equiv authentication together with 
-             successful public key client host authentication is allowed (host-based authentication).";
+             "Specifies whether rhosts or /etc/hosts.equiv authentication 
+	     together with successful public key client host authentication 
+	     is allowed (host-based authentication).";
          type enumeration {
               enum "yes";
               enum "no";
@@ -262,9 +275,10 @@ module sshd_config {
     }
     leaf HostbasedUsesNameFromPacketOnly {
          description
-             "Specifies whether or not the server will attempt to perform a reverse name 
-             lookup when matching the name in the ~/.shosts, ~/.rhosts, and /etc/hosts.equiv 
-             files during HostbasedAuthentication.";
+             "Specifies whether or not the server will attempt to perform 
+             a reverse name lookup when matching the name in the ~/.shosts, 
+	     ~/.rhosts, and /etc/hosts.equiv files during 
+	     HostbasedAuthentication.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -283,12 +297,14 @@ module sshd_config {
     }
     leaf HostKeyAgent {
          description
-             "Identifies the UNIX-domain socket used to communicate with an agent that has access to the private host keys."; 
+             "Identifies the UNIX-domain socket used to communicate with an 
+              agent that has access to the private host keys."; 
          type uint16;
     }
     leaf IgnoreRhosts {
          description
-             "Specifies that .rhosts and .shosts files will not be used in RhostsRSAAuthentication or HostbasedAuthentication.";
+             "Specifies that .rhosts and .shosts files will not be used in 
+              RhostsRSAAuthentication or HostbasedAuthentication.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -297,8 +313,8 @@ module sshd_config {
      }
      leaf IgnoreUserKnownHosts {
           description
-             "Specifies whether sshd should ignore the user's ~/.ssh/known_hosts during RhostsRSAAuthentication or
-             HostbasedAuthentication.";
+             "Specifies whether sshd should ignore the user's ~/.ssh/known_hosts 
+              during RhostsRSAAuthentication or HostbasedAuthentication.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -322,8 +338,9 @@ module sshd_config {
      }
      leaf KerberosAuthentication {
           description
-             "Specifies whether the password provided by the user for PasswordAuthentication
-              will be validated through the Kerberos KDC.";
+             "Specifies whether the password provided by the user for 
+      	     PasswordAuthentication will be validated through the Kerberos 
+             KDC.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -332,8 +349,8 @@ module sshd_config {
      }
      leaf KerberosGetAFSToken {
           description
-             "If AFS is active and the user has a Kerberos 5 TGT, attempt to acquire an AFS 
-             token before accessing the user's home directory.";
+             "If AFS is active and the user has a Kerberos 5 TGT, attempt to 
+              acquire an AFS token before accessing the user's home directory.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -342,8 +359,9 @@ module sshd_config {
      }
      leaf KerberosOrLocalPasswd {
           description
-             "If password authentication through Kerberos fails then the password will be 
-             validated via any additional local mechanism such as /etc/passwd.";
+             "If password authentication through Kerberos fails then the 
+              password will be validated via any additional local mechanism 
+              such as /etc/passwd.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -352,7 +370,8 @@ module sshd_config {
      }
      leaf KerberosTicketCleanup {
           description
-             "Specifies whether to automatically destroy the user's ticket cache file on logout.";
+             "Specifies whether to automatically destroy the user's ticket 
+              cache file on logout.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -372,23 +391,28 @@ module sshd_config {
      }
      leaf KeyRegenerationInterval {
           description
-             "In protocol version 1, the ephemeral server key is automatically regenerated after 
-             this many seconds (if it has been used).  The purpose of regeneration is to prevent 
-             decrypting captured sessions by later breaking into the machine and stealing the keys.  
-             The key is never stored anywhere.  If the value is 0, the key is never regenerated.";
+             "In protocol version 1, the ephemeral server key is 
+              automatically regenerated after this many seconds (if 
+              it has been used).  The purpose of regeneration is to 
+              prevent decrypting captured sessions by later breaking 
+              into the machine and stealing the keys.  The key is 
+              never stored anywhere.  If the value is 0, the key is 
+              never regenerated.";
           type uint16;
           default 3600;
      }
      leaf ListenAddress {
           description
-             "Specifies the local addresses sshd should listen on.  The following forms may be used:
+             "Specifies the local addresses sshd should listen on.  
+	       The following forms may be used:
 
                    ListenAddress host|IPv4_addr|IPv6_addr
                    ListenAddress host|IPv4_addr:port
                    ListenAddress [host|IPv6_addr]:port
 
-             If port is not specified, sshd will listen on the address and all prior Port options 
-             specified.  The default is to listen on all local addresses.  Multiple ListenAddress 
+             If port is not specified, sshd will listen on the address 
+             and all prior Port options specified.  The default is to 
+             listen on all local addresses.  Multiple ListenAddress 
              options are permitted.  Additionally, any Port options must
              precede this option for non-port qualified addresses.";
           type string;
@@ -396,20 +420,23 @@ module sshd_config {
      }
      leaf LoginGraceTime {
           description
-             "The server disconnects after this time if the user has not successfully 
-              logged in.  If the value is 0, there is no time limit.";
+             "The server disconnects after this time if the user has not 
+              successfully logged in.  If the value is 0, there is no 
+              time limit.";
           type uint16;
           default 120;
      }
      leaf LogLevel {
           description
-             "Gives the verbosity level that is used when logging messages from sshd.";
+             "Gives the verbosity level that is used when logging messages 
+              from sshd.";
           type string;
           default "QUIET";
      }
      leaf MACs     {
           description
-             "Specifies the available MAC (message authentication code) algorithms.";
+             "Specifies the available MAC (message authentication code) 
+	      algorithms.";
           type string;
           default "hmac-md5-etm@openssh.com,hmac-sha1-etm@openssh.com,\
                    umac-64-etm@openssh.com,umac-128-etm@openssh.com,\
@@ -427,20 +454,24 @@ module sshd_config {
      }
      leaf MaxAuthTries {
           description
-             "Specifies the maximum number of authentication attempts permitted per connection.";
+             "Specifies the maximum number of authentication attempts 
+	      permitted per connection.";
           type uint16;
           default 6;
      }
      leaf MaxSessions {
           description
-             "Specifies the maximum number of open sessions permitted per network connection. ";
+             "Specifies the maximum number of open sessions permitted per 
+              network connection. ";
           type uint16;
           default 10;
      }
      leaf MaxStartups {
           description
-             "Specifies the maximum number of concurrent unauthenticated connections to the SSH daemon.  Additional connections will
-             be dropped until authentication succeeds or the LoginGraceTime expires for a connection.  The default is 10:30:100.";
+             "Specifies the maximum number of concurrent unauthenticated
+              connections to the SSH daemon.  Additional connections will 
+              be dropped until authentication succeeds or the LoginGraceTime 
+              expires for a connection.  The default is 10:30:100.";
           type uint16;
 	  default 10;
      }
@@ -458,7 +489,8 @@ module sshd_config {
      }
      leaf PasswordAuthentication {
           description
-             "Specifies whether password authentication is allowed.  The default is “yes”.";
+             "Specifies whether password authentication is allowed.  The 
+              default is “yes”.";
          type enumeration {
               enum "yes";
               enum "no";
@@ -467,8 +499,9 @@ module sshd_config {
      }
      leaf PermitEmptyPasswords {
           description
-             "When password authentication is allowed, it specifies whether the server allows login to accounts with empty password
-             strings.";
+             "When password authentication is allowed, it specifies whether 
+              the server allows login to accounts with empty password 
+              strings.";
          type enumeration {
               enum "yes";
               enum "no";
