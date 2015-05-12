@@ -395,14 +395,13 @@ int com_datastore (arg)
       fprintf(stderr, "Please connect to a sysrepo server\n");
       return 1;
     }
-  if ((arg) && (strlen(arg) < SRD_DEFAULT_NAMESIZE) 
-            && (strlen(arg) < sizeof(dataStoreName)))
-    strncpy(dataStoreName, arg,strlen(arg));
-  if (!(srd_setDataStore(sockfd, dataStoreName)))
+  if (!(srd_setDataStore(sockfd, arg)))
     {
       fprintf(stderr, "Failed to access datastore:%s\n", arg);
       return 1;
     }
+  memset(dataStoreName, 0, sizeof(dataStoreName));
+  strcpy(dataStoreName,arg);
   state = repopen;
   return 0;
 }
