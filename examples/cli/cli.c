@@ -63,8 +63,8 @@ COMMAND commands[] = {
   { "open", com_datastore, "Use the datastore named NAME" },
   { "send", com_send, "Send SRD string to the connected server" },
   { "xslt", com_xslt, "Apply string xls FILE-NAME to the open datastore" },
-  { "help", com_help, "Display this text" },
   { "xpath", com_xpath, "Apply string XPATH to the the open datastore" },
+  { "help", com_help, "Display this text" },
   { "?", com_help, "Synonym for `help'" },
   { "quit",com_quit,"Quit the sysrepo CLI" },
   { (char *)NULL, (Function2 *)NULL, (char *)NULL }
@@ -469,7 +469,20 @@ int com_xslt (char *arg)
 }
 int com_xpath (char *arg)
 {
-  fprintf(stderr,"Not implemented\n");
+  char *p;
+  char *err = strchr(arg,'"');
+  if (err)
+    {
+      fprintf(stderr,"XPATH string contains a quote\n");
+      return 1;
+    }
+  srd_applyXPath(sockfd, arg, &p);
+  if (!p)
+    {
+      fprintf(stderr, "XPATH result is NULL\n");
+      return 1;
+    }
+  printf("%s\n", p);
   return 0;
 }
 /* Print out help for ARG, or for all of the commands if ARG is
