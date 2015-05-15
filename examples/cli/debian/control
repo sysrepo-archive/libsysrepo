@@ -1,0 +1,12 @@
+Source: sysrepo-cli
+Section: devel
+Priority: optional
+Maintainer: Luka Perkov <luka.perkov@sartura.hr>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+Homepage: http://www.sysrepo.org/
+
+Package: sysrepo-cli
+Architecture: amd64 i386
+Depends: sysrepod, libxml2-dev, libreadline-dev
+Description: sysrepo cli tool
