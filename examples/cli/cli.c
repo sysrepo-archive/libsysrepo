@@ -19,8 +19,10 @@
    to manipulate files and their modes. */
 
 /* cli.c replaces most of the commands in fileman.c with commands for
-   commands for a dialog with sysrepod.
-   cli.c was created by Mark Baugher in May 2015 for the sysrepo project
+   a dialog with sysrepod, a local agent, or a tool.
+   cli.c was derived by Mark Baugher in May 2015 for the sysrepo project.
+
+   2015-05: Use parsable lineptr in addition to line.
 */
 
 #include <stdio.h>
@@ -107,26 +109,32 @@ int main (int argc, char **argv)
 
   initialize_readline ();/* Bind our completer. */
 
+  char *lineptr = NULL;
   /* Loop reading and executing lines until the user quits. */
   for ( ; done == 0; )
     {
-      line = readline ("sysrepo> ");
+      if (!lineptr)
+	{
+	  if (!(line = readline("sysrepo> "))) 
+	    break;
+	  lineptr = strtok(line, ";");
+	}
 
-      if (!line)
-        break;
+      printf("line is %s\n",line);
 
       /* Remove leading and trailing whitespace from the line.
          Then, if there is anything left, add it to the history list
          and execute it. */
-      s = stripwhite (line);
+      s = stripwhite (lineptr);
 
       if (*s)
         {
           add_history (s);
           execute_line (s);
         }
-
-      free (line);
+      lineptr = strtok(NULL,";");
+      if(!lineptr)
+	free (line);
     }
   close(sockfd);
   exit (0);
